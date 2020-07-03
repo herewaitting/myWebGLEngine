@@ -1,5 +1,7 @@
 {
   "devDependencies": {
+    "css-loader": "^3.6.0",
+    "ts-loader": "^7.0.5",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
   }
