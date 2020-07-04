@@ -4,5 +4,12 @@
     "ts-loader": "^7.0.5",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
+  },
+  "scripts": {
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production"
+  },
+  "dependencies": {
+    "path": "^0.12.7"
   }
 }
