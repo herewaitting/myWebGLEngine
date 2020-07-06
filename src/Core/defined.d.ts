@@ -11,7 +11,5 @@
  *      doSomethingElse();
  * }
  */
-function defined(value) {
-  return value !== undefined && value !== null;
-}
+declare function defined(value: any): boolean;
 export default defined;

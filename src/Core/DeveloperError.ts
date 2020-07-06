@@ -1,4 +1,12 @@
-import defined from "./defined.js";
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: STC
+ * @Date: 2020-07-04 14:20:15
+ * @LastEditors: STC
+ * @LastEditTime: 2020-07-06 15:56:50
+ */ 
+import defined from "./defined";
 
 /**
  * Constructs an exception object that is thrown due to a developer error, e.g., invalid argument,
@@ -18,13 +26,13 @@ import defined from "./defined.js";
  *
  * @see RuntimeError
  */
-function DeveloperError(message) {
+const DeveloperError: any = function(this: any, message: string) {
   /**
    * 'DeveloperError' indicating that this exception was thrown due to a developer error.
    * @type {String}
    * @readonly
    */
-  this.name = "DeveloperError";
+  (this as any).name = "DeveloperError";
 
   /**
    * The explanation for why this exception was thrown.
