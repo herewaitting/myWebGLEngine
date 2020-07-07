@@ -1,11 +1,3 @@
-/*
- * @Descripttion: 
- * @version: 
- * @Author: STC
- * @Date: 2020-07-04 14:20:15
- * @LastEditors: STC
- * @LastEditTime: 2020-07-06 15:56:50
- */ 
 import defined from "./defined";
 
 /**
@@ -26,58 +18,55 @@ import defined from "./defined";
  *
  * @see RuntimeError
  */
-const DeveloperError: any = function(this: any, message: string) {
-  /**
-   * 'DeveloperError' indicating that this exception was thrown due to a developer error.
-   * @type {String}
-   * @readonly
-   */
-  (this as any).name = "DeveloperError";
+export class DeveloperError{
+  public name: string;
+  public message: string;
+  public stack: any;
+  static throwInstantiationError() {
+    throw new DeveloperError(
+      "This function defines an interface and should not be called directly."
+    );
+  };
+  constructor(message: string) {
+      /**
+       * 'DeveloperError' indicating that this exception was thrown due to a developer error.
+       * @type {String}
+       * @readonly
+       */
+      this.name = "DeveloperError";
 
-  /**
-   * The explanation for why this exception was thrown.
-   * @type {String}
-   * @readonly
-   */
-  this.message = message;
+      /**
+       * The explanation for why this exception was thrown.
+       * @type {String}
+       * @readonly
+       */
+      this.message = message;
 
-  //Browsers such as IE don't have a stack property until you actually throw the error.
-  var stack;
-  try {
-    throw new Error();
-  } catch (e) {
-    stack = e.stack;
+      //Browsers such as IE don't have a stack property until you actually throw the error.
+      var stack;
+      try {
+        throw new Error();
+      } catch (e) {
+        stack = e.stack;
+      }
+
+      /**
+       * The stack trace of this exception, if available.
+       * @type {String}
+       * @readonly
+       */
+      this.stack = stack;
   }
-
-  /**
-   * The stack trace of this exception, if available.
-   * @type {String}
-   * @readonly
-   */
-  this.stack = stack;
+  public toString() {
+    let str = this.name + ": " + this.message;
+    if (defined(this.stack)) {
+      str += "\n" + this.stack.toString();
+    }
+    return str;
+  };
 }
 
-if (defined(Object.create)) {
-  DeveloperError.prototype = Object.create(Error.prototype);
-  DeveloperError.prototype.constructor = DeveloperError;
-}
-
-DeveloperError.prototype.toString = function () {
-  var str = this.name + ": " + this.message;
-
-  if (defined(this.stack)) {
-    str += "\n" + this.stack.toString();
-  }
-
-  return str;
-};
-
-/**
- * @private
- */
-DeveloperError.throwInstantiationError = function () {
-  throw new DeveloperError(
-    "This function defines an interface and should not be called directly."
-  );
-};
-export default DeveloperError;
+// if (defined(Object.create)) {
+//   DeveloperError.prototype = Object.create(Error.prototype);
+//   DeveloperError.prototype.constructor = DeveloperError;
+// }

@@ -4,13 +4,12 @@
  * @Author: STC
  * @Date: 2020-07-03 15:26:44
  * @LastEditors: STC
- * @LastEditTime: 2020-07-06 16:23:34
+ * @LastEditTime: 2020-07-07 13:35:19
  */ 
-import Check from "./Core/Check";
-import * as glMat from "gl-matrix-ts";
-export const StcGLEngine = {
-    Check : Check,
-    glMat : glMat
-}
-
-
+export const VERSION = "1.0.0";
+export { default as Check } from "./Core/Check";
+export { default as Viewer } from "./Viewer/Viewer";
+// export const StcGLEngine = {
+//     Check: Check,
+//     Viewer: Viewer
+// }

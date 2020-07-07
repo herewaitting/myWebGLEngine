@@ -1,5 +1,5 @@
 import defined from "./defined";
-import DeveloperError from "./DeveloperError";
+import { DeveloperError } from "./DeveloperError";
 
 /**
  * Contains functions for checking that supplied arguments are of a specified type

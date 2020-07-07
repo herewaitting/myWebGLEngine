@@ -7,3 +7,9 @@ body{
     position: relative;
     height: 100%;
 }
+
+.stc-gl-innerDiv, .stc-gl-innerDiv canvas {
+    width: 100%;
+    height: 100%;
+    touch-action: none; /*禁止移动端触控*/
+}

@@ -4,7 +4,7 @@
  * @Author: STC
  * @Date: 2020-07-03 15:25:54
  * @LastEditors: STC
- * @LastEditTime: 2020-07-06 15:39:13
+ * @LastEditTime: 2020-07-07 11:26:16
  */ 
 const path = require('path');
 const config = {
@@ -27,12 +27,8 @@ const config = {
                 }
               }
             ]
-          }
-        ]
-    },
-    module: {
-        rules: [
-            {test:/\.ts$/,exclude: /node_modules/,use:['ts-loader']}
+          },
+          {test:/\.ts$/,exclude: /node_modules/,use:['ts-loader']}
         ]
     },
     resolve: {
