@@ -132,11 +132,49 @@ var StcGLEngine = (function (exports) {
       }
   };
 
+  var defaultContextAtt = {
+      alpha: true,
+      antialias: true,
+      depth: true,
+      failIfMajorPerformanceCaveat: true,
+      powerPreference: "default",
+      premultipliedAlpha: true,
+      preserveDrawingBuffer: true,
+      stencil: true
+  };
+  var create3DContext = function (canvas) {
+      var names = ["webgl", "experimental-webgl", "webkit-3d", "moz-webgl"];
+      var context = null;
+      for (var ii = 0; ii < names.length; ++ii) {
+          try {
+              context = canvas.getContext(names[ii], defaultContextAtt);
+          }
+          catch (e) { }
+          if (context) {
+              break;
+          }
+      }
+      return context;
+  };
   var Scene = (function () {
       function Scene(canvas, config) {
+          if (!defined(canvas)) {
+              throw new DeveloperError("options and options.canvas are required.");
+          }
+          this.contextGL = create3DContext(canvas);
+          if (!defined(this.contextGL)) {
+              throw new DeveloperError("创建canvas上下文失败！");
+          }
       }
       return Scene;
   }());
+
+  var GetWindowSize = function () {
+      return {
+          width: window.innerWidth,
+          height: window.innerHeight
+      };
+  };
 
   var Viwer = (function () {
       function Viwer(container, option) {
@@ -149,9 +187,15 @@ var StcGLEngine = (function (exports) {
                   var innerContainerDiv = document.createElement("div");
                   innerContainerDiv.className = "stc-gl-innerDiv";
                   var sceneCanvas = document.createElement("canvas");
+                  var winSize = GetWindowSize();
+                  sceneCanvas.width = winSize.width;
+                  sceneCanvas.height = winSize.height;
                   innerContainerDiv.appendChild(sceneCanvas);
                   containerEle.appendChild(innerContainerDiv);
-                  this.Scene = new Scene(sceneCanvas, {});
+                  this.Scene = new Scene(sceneCanvas, {
+                      width: winSize.width,
+                      height: winSize.height
+                  });
               }
           }
       }

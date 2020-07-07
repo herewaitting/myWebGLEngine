@@ -4,31 +4,18 @@
  * @Author: STC
  * @Date: 2020-07-07 09:41:10
  * @LastEditors: STC
- * @LastEditTime: 2020-07-07 13:37:42
+ * @LastEditTime: 2020-07-07 14:22:45
  */ 
 
 import define from "../Core/defined";
 import Scene from "../Scene/Scene";
+import { GetWindowSize } from "../Util/ElementUT"; 
 export interface IViewerCfg{
     [key: string]: any;
 }
 
 const defaultCfg = {
 
-}
-
-const create3DContext = (canvas: Element, opt_attribs: any) => {
-    var names = ["webgl", "experimental-webgl", "webkit-3d", "moz-webgl"];
-    var context = null;
-    for (var ii = 0; ii < names.length; ++ii) {
-      try {
-        context = (canvas as any).getContext(names[ii], opt_attribs);
-      } catch(e) {}
-      if (context) {
-        break;
-      }
-    }
-    return context;
 }
 
 //window.devicePixelRatio
@@ -45,9 +32,15 @@ export default class Viwer{
                 const innerContainerDiv = document.createElement("div");
                 innerContainerDiv.className = "stc-gl-innerDiv";
                 const sceneCanvas = document.createElement("canvas");
+                const winSize = GetWindowSize();
+                sceneCanvas.width = winSize.width;
+                sceneCanvas.height = winSize.height;
                 innerContainerDiv.appendChild(sceneCanvas);
                 containerEle.appendChild(innerContainerDiv);
-                this.Scene = new Scene(sceneCanvas, {});
+                this.Scene = new Scene(sceneCanvas, {
+                    width: winSize.width,
+                    height: winSize.height
+                });
             }
         }
     }

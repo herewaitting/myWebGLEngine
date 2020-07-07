@@ -4,10 +4,14 @@
  * @Author: STC
  * @Date: 2020-07-07 10:35:32
  * @LastEditors: STC
- * @LastEditTime: 2020-07-07 10:41:28
+ * @LastEditTime: 2020-07-07 14:23:10
  */ 
+import defined from "../Core/defined";
+import { DeveloperError } from "../Core/DeveloperError";
 
 export interface ISceneCfg {
+    width: number;
+    height: number;
     [key: string] : any;
 }
 
@@ -16,8 +20,40 @@ export interface ISceneOpt{
     [key: string] : any;
 }
 
-export default class Scene {
-    constructor(canvas: Element, config: ISceneCfg) {
+const defaultContextAtt = {
+    alpha: true,
+    antialias: true,
+    depth: true,
+    failIfMajorPerformanceCaveat: true,
+    powerPreference: "default",
+    premultipliedAlpha: true,
+    preserveDrawingBuffer: true,
+    stencil: true
+}
 
+const create3DContext = (canvas: Element) => {
+    var names = ["webgl", "experimental-webgl", "webkit-3d", "moz-webgl"];
+    var context = null;
+    for (var ii = 0; ii < names.length; ++ii) {
+      try {
+        context = (canvas as any).getContext(names[ii], defaultContextAtt);
+      } catch(e) {}
+      if (context) {
+        break;
+      }
+    }
+    return context;
+}
+
+export default class Scene {
+    public contextGL: any;
+    constructor(canvas: Element, config: ISceneCfg) {
+        if (!defined(canvas)) {
+            throw new DeveloperError("options and options.canvas are required.");
+        }
+        this.contextGL = create3DContext(canvas);
+        if (!defined(this.contextGL)) {
+            throw new DeveloperError("创建canvas上下文失败！");
+        }
     }
 }
