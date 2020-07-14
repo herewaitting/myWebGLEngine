@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: STC
+ * @Date: 2020-07-04 14:20:15
+ * @LastEditors: STC
+ * @LastEditTime: 2020-07-06 15:51:05
+ */ 
 /**
  * @function
  *
@@ -11,7 +19,7 @@
  *      doSomethingElse();
  * }
  */
-function defined(value) {
+function defined(value: any) {
   return value !== undefined && value !== null;
 }
 export default defined;
