@@ -3,11 +3,12 @@
  * @version: 
  * @Author: STC
  * @Date: 2020-07-07 10:35:32
- * @LastEditors: STC
- * @LastEditTime: 2020-07-07 14:23:10
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-07-14 19:31:56
  */ 
 import defined from "../Core/defined";
 import { DeveloperError } from "../Core/DeveloperError";
+import Event from "../Core/Event";
 
 export interface ISceneCfg {
     width: number;
@@ -47,6 +48,9 @@ const create3DContext = (canvas: Element) => {
 
 export default class Scene {
     public contextGL: any;
+    public beforeRender: Event = new Event(); 
+    public beforePostPrecess: Event = new Event();
+    public renderError: Event = new Event();
     constructor(canvas: Element, config: ISceneCfg) {
         if (!defined(canvas)) {
             throw new DeveloperError("options and options.canvas are required.");
