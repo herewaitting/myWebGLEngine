@@ -132,6 +132,86 @@ var StcGLEngine = (function (exports) {
       }
   };
 
+  var compareNumber = function (a, b) {
+      return b - a;
+  };
+  var Event = (function () {
+      function Event() {
+          var _this = this;
+          this.addEventListener = function (listener, scope) {
+              Check.typeOf.func("listener", listener);
+              _this._listeners.push(listener);
+              _this._scopes.push(scope);
+              var event = _this;
+              return function () {
+                  event.removeEventListener(listener, scope);
+              };
+          };
+          this.removeEventListener = function (listener, scope) {
+              Check.typeOf.func("listener", listener);
+              var listeners = _this._listeners;
+              var scopes = _this._scopes;
+              var index = -1;
+              for (var i = 0; i < listeners.length; i++) {
+                  if (listeners[i] === listener && scopes[i] === scope) {
+                      index = i;
+                      break;
+                  }
+              }
+              if (index !== -1) {
+                  if (_this._insideRaiseEvent) {
+                      _this._toRemove.push(index);
+                      listeners[index] = undefined;
+                      scopes[index] = undefined;
+                  }
+                  else {
+                      listeners.splice(index, 1);
+                      scopes.splice(index, 1);
+                  }
+                  return true;
+              }
+              return false;
+          };
+          this.raiseEvent = function (rest) {
+              _this._insideRaiseEvent = true;
+              var i;
+              var listeners = _this._listeners;
+              var scopes = _this._scopes;
+              var length = listeners.length;
+              for (i = 0; i < length; i++) {
+                  var listener = listeners[i];
+                  if (defined(listener)) {
+                      listeners[i].apply(scopes[i], rest);
+                  }
+              }
+              var toRemove = _this._toRemove;
+              length = toRemove.length;
+              if (length > 0) {
+                  toRemove.sort(compareNumber);
+                  for (i = 0; i < length; i++) {
+                      var index = toRemove[i];
+                      listeners.splice(index, 1);
+                      scopes.splice(index, 1);
+                  }
+                  toRemove.length = 0;
+              }
+              _this._insideRaiseEvent = false;
+          };
+          this._listeners = [];
+          this._scopes = [];
+          this._toRemove = [];
+          this._insideRaiseEvent = false;
+      }
+      return Event;
+  }());
+  Object.defineProperties(Event.prototype, {
+      numberOfListeners: {
+          get: function () {
+              return this._listeners.length - this._toRemove.length;
+          }
+      }
+  });
+
   var defaultContextAtt = {
       alpha: true,
       antialias: true,
@@ -158,6 +238,9 @@ var StcGLEngine = (function (exports) {
   };
   var Scene = (function () {
       function Scene(canvas, config) {
+          this.beforeRender = new Event();
+          this.beforePostPrecess = new Event();
+          this.renderError = new Event();
           if (!defined(canvas)) {
               throw new DeveloperError("options and options.canvas are required.");
           }

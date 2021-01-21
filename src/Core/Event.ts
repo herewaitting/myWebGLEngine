@@ -1,5 +1,5 @@
-import Check from "./Check.js";
-import defined from "./defined.js";
+import Check from "./Check";
+import defined from "./defined";
 
 const compareNumber = (a: any, b: any) => {
     return b - a;
@@ -106,7 +106,7 @@ class Event {
      * @see Event#addEventListener
      * @see Event#removeEventListener
      */
-    raiseEvent = (...rest: any) => {
+    raiseEvent = (rest: any[]) => {
         this._insideRaiseEvent = true;
 
         var i;

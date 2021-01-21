@@ -1,3 +1,4 @@
+import Event from "../Core/Event";
 export interface ISceneCfg {
     width: number;
     height: number;
@@ -9,5 +10,8 @@ export interface ISceneOpt {
 }
 export default class Scene {
     contextGL: any;
+    beforeRender: Event;
+    beforePostPrecess: Event;
+    renderError: Event;
     constructor(canvas: Element, config: ISceneCfg);
 }
